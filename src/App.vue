@@ -1,7 +1,7 @@
 
 
 <template>
-  App Vue
+  <router-view></router-view>
 </template>
 
 <script setup>
