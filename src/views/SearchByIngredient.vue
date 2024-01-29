@@ -7,7 +7,7 @@
         />
 
         <router-link :to="{name: 'byIngredient', params: {ingredient: ingredient.strIngredient}}" 
-        v-for="ingredient of ingredients" :key="ingredient.idIngredient"
+        v-for="ingredient of computedIngredients" :key="ingredient.idIngredient"
         class="block bg-white shadow-md rounded p-3 mb-3"
         >
         <h3 class="text-2xl mb-2 ">{{ ingredient.strIngredient }}</h3>
@@ -17,12 +17,17 @@
     </template>
     
 <script setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import axiosClient from '../axiosclient';
 
 
 const keyword = ref('')
 const ingredients = ref([])
+const computedIngredients = computed(()=>{
+
+    if (!computedIngredients) return ingredients
+    return ingredients.value.filter(i => i.strIngredient.toLowerCase().includes(keyword.value.toLowerCase()))
+})
 
     onMounted(() => {
         axiosClient.get('/list.php?i=list')
